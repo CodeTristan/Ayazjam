@@ -4,27 +4,26 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f; // Movement speed
+    public float moveSpeed = 5f;
     public int MaxHealth;
     public int CurrentHealth;
     public int Damage = 1;
     public float AttackRange = 1;
     public float AttackCooldown = 1;
     public float AttackTimer = 1;
-    public float gridSize = 1f; // Size of each grid cell
-    private Vector3 targetPosition; // Target position for grid movement
-    private bool isMoving = false; // Whether the player is currently moving
-    public float gridWidth = 8f; // Width of the grid
-    public float gridHeight = 8f; // Height of the grid
+    public float gridSize = 1f;
+    private Vector3 targetPosition;
+    private bool isMoving = false;
+    public float gridWidth = 8f;
+    public float gridHeight = 8f;
 
-    private Animator animator; // Reference to the Animator component
+    private Animator animator;
     public Rigidbody rb;
 
     public float currentAttackTimer;
 
     void Start()
     {
-        // Baþlangýç pozisyonunu ayarla
         targetPosition = transform.position;
     }
 
