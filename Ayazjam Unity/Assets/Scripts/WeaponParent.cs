@@ -8,6 +8,7 @@ public class WeaponParent : MonoBehaviour
 
     private void Update()
     {
-        transform.position = (PointerPosition -(Vector2)transform.position).normalized;
+        transform.position = (PointerPosition -(Vector2)transform.position).normalized
+            ;
     }
 }

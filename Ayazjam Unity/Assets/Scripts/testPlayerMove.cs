@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        Vector2 movement = new Vector2(moveDirection.x, moveDirection.y) * Time.deltaTime * 5f;
+        Vector3 movement = new Vector3(moveDirection.x,0, moveDirection.y) * Time.deltaTime * 5f;
         transform.Translate(movement, Space.World);
     }
 }
