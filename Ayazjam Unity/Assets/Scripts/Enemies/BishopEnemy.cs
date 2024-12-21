@@ -28,7 +28,7 @@ public class BishopEnemy : EnemyBase
             StartCoroutine(Attack());
             currentAttackTimer = AttackTimer;
         }
-        else if (currentWalkTimer <= 0 && !isAttacking) // add if on edge of map 
+        else if (currentWalkTimer <= 0 && !isAttacking && !IsEvolved) // add if on edge of map 
         {
             Move();
             currentWalkTimer = WalkCoolDown;
@@ -102,6 +102,7 @@ public class BishopEnemy : EnemyBase
             IsEvolved = true;
         }
 
+        TileManager.instance.CheckIfEvolvedEnemyAhead(this);
         StartCoroutine(moveNumerator(movedPos));
     }
 

@@ -19,6 +19,9 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody rb;
 
     public float currentAttackTimer;
+    public float MovementTimer;
+
+    private float currentMovementTimer;
 
     void Start()
     {
@@ -27,8 +30,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        currentMovementTimer -= Time.deltaTime;
         // Eðer karakter hareket etmiyorsa, hareket girdisini kontrol et
-        if (!isMoving)
+        if (currentMovementTimer <= 0)
         {
             HandleMovementInput();
         }
@@ -39,16 +43,18 @@ public class PlayerMovement : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
             // Hedef pozisyona ulaþýldýðýnda hareketi durdur
-            if (Vector3.Distance(transform.position, targetPosition) < 0.01f)
+            if (Vector3.Distance(transform.position, targetPosition) < 0.05f)
             {
-                transform.position = targetPosition; // Pozisyonu tam olarak hizala
                 isMoving = false; // Hareket tamamlandý
+                transform.position = targetPosition; // Pozisyonu tam olarak hizala
+                Debug.Log(transform.position.z / 1.25f);
             }
         }
     }
 
     private void HandleMovementInput()
     {
+        isMoving = true;
         // WASD veya ok tuþlarýndan hareket girdisini al
         if (Input.GetKeyDown(KeyCode.W)) // Yukarý hareket
         {
@@ -66,11 +72,21 @@ public class PlayerMovement : MonoBehaviour
         {
             Move(new Vector2(1, 0));
         }
+
     }
 
     private void Move(Vector2 moveInput)
     {
-        if(TileManager.instance.playerBoardPos.YPos == 3 && moveInput.y == 1)
+        if(currentMovementTimer > 0)
+        {
+            Debug.Log("returned");
+            return;
+        }
+        else
+        {
+            currentMovementTimer = MovementTimer;
+        }
+        if (TileManager.instance.playerBoardPos.YPos == 3 && moveInput.y == 1)
         {
             TileManager.instance.ShiftTileUp();
             return;
@@ -89,16 +105,11 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-
-
-        // Hareket yönünü hesapla
-        Vector3 direction = new Vector3(moveInput.x, 0, moveInput.y); // Hem X hem de Y ekseninde hareket
-
         // Yeni hedef pozisyonu hesapla
-        targetPosition += new Vector3(gridSize.x * moveInput.x,0,gridSize.y * moveInput.y);
+        targetPosition = transform.position + new Vector3(gridSize.x * moveInput.x,0,gridSize.y * moveInput.y);
 
-        // Hareketi baþlat
         isMoving = true;
+        // Hareketi baþlat
 
         TileManager.instance.playerBoardPos.XPos += (int)moveInput.x;
         TileManager.instance.playerBoardPos.YPos += (int)moveInput.y;

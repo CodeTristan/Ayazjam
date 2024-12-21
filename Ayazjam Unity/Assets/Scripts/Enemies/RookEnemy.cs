@@ -27,7 +27,7 @@ public class RookEnemy : EnemyBase
             StartCoroutine(Attack());
             currentAttackTimer = AttackTimer;
         }
-        else if (currentWalkTimer <= 0 && !isAttacking) // add if on edge of map 
+        else if (currentWalkTimer <= 0 && !isAttacking && !IsEvolved) // add if on edge of map 
         {
             Move();
             currentWalkTimer = WalkCoolDown;
@@ -118,6 +118,8 @@ public class RookEnemy : EnemyBase
         Vector3 moveVector = new Vector3(MoveVector.x * xPower, 0, MoveVector.y * yPower) * Speed;
         selectedMovePos = transform.position + moveVector;
         CalculateBoardPosition(moveVector);
+
+        TileManager.instance.CheckIfEvolvedEnemyAhead(this);
     }
 
     public override void TakeDamage(int damage)

@@ -29,6 +29,8 @@ public class SwordController : MonoBehaviour
     {
         mainCamera = Camera.main;
         targetPosition = sword.position;
+
+
     }
 
     private void Update()
@@ -37,7 +39,7 @@ public class SwordController : MonoBehaviour
         {
             //UpdateSwordPosition();
         }
-
+        LightTile();
         // Sol týk ile saldýrý baþlat
         if (Input.GetMouseButtonDown(0) && !isAttacking)
         {

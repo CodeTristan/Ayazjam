@@ -27,7 +27,7 @@ public class KnightEnemy : EnemyBase
             StartCoroutine(Attack());
             currentAttackTimer = AttackTimer;
         }
-        else if (currentWalkTimer <= 0 && !isAttacking) // add if on edge of map 
+        else if (currentWalkTimer <= 0 && !isAttacking && !IsEvolved) // add if on edge of map 
         {
             Move();
             currentWalkTimer = WalkCoolDown;

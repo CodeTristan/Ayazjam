@@ -26,7 +26,7 @@ public class PawnEnemy : EnemyBase
             StartCoroutine(Attack());
             currentAttackTimer = AttackTimer;
         }
-        else if(currentWalkTimer <= 0 && !isAttacking) // add if on edge of map 
+        else if(currentWalkTimer <= 0 && !isAttacking && !IsEvolved) // add if on edge of map 
         {
             Move();
             currentWalkTimer = WalkCoolDown;
@@ -98,6 +98,8 @@ public class PawnEnemy : EnemyBase
         //transform.position += moveVector;
         selectedMovePos = transform.position + moveVector;
         CalculateBoardPosition(moveVector);
+
+        TileManager.instance.CheckIfEvolvedEnemyAhead(this);
 
     }
 

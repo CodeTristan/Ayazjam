@@ -54,6 +54,11 @@ public class TileManager : MonoBehaviour
         {
             boardHolder.transform.position = Vector3.MoveTowards(boardHolder.position,Target,moveSpeed * Time.deltaTime);
         }
+        else
+        {
+            boardHolder.transform.position = Target;
+            Debug.Log(boardHolder.transform.position.z / GridMoveSize.y);
+        }
     }
 
     public void ShiftTileUp()
@@ -66,17 +71,17 @@ public class TileManager : MonoBehaviour
 
         foreach (EnemyBase enemy in enemiesOnBoard)
         {
-            if(enemy.boardPosition.YPos != 0)
+            if(!enemy.IsEvolved)
             {
                 enemy.boardPosition.YPos -= 1;
-                enemy.selectedMovePos = enemy.transform.position + new Vector3(0, 0, -1.25f);
+                enemy.selectedMovePos = enemy.transform.position + new Vector3(0, 0, -GridMoveSize.y);
                 enemy.ResetMovementTimer();
-
+                CheckIfEvolvedEnemyAhead(enemy);
             }
 
         }
 
-        Target = boardHolder.transform.position + new Vector3(0, 0, -1.25f);
+        Target = boardHolder.transform.position + new Vector3(0, 0, -GridMoveSize.y);
         currentTileIndex++;
     }
 
@@ -92,12 +97,16 @@ public class TileManager : MonoBehaviour
             { 
                 //enemy can move iptal
             }
-            enemy.boardPosition.YPos += 1;
-            enemy.selectedMovePos = enemy.transform.position + new Vector3(0, 0, 1.25f);
-            enemy.ResetMovementTimer();
+            if(!enemy.IsEvolved)
+            {
+                enemy.boardPosition.YPos += 1;
+                enemy.selectedMovePos = enemy.transform.position + new Vector3(0, 0, GridMoveSize.y);
+                enemy.ResetMovementTimer();
+            }
+
         }
 
-        Target = boardHolder.transform.position + new Vector3(0, 0, 1.25f);
+        Target = boardHolder.transform.position + new Vector3(0, 0, GridMoveSize.y);
         currentTileIndex--;
     }
 
@@ -107,7 +116,6 @@ public class TileManager : MonoBehaviour
         Collider[] colliders = Physics.OverlapBox(transform.position, collisionBoxSize);
         foreach (Collider collider in colliders)
         {
-            Debug.Log(collider.gameObject.name);
             if(collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
                 enemiesOnBoard.Add(collider.transform.parent.GetComponent<EnemyBase>());
@@ -115,9 +123,26 @@ public class TileManager : MonoBehaviour
         }
     }
 
+    public void CheckIfEvolvedEnemyAhead(EnemyBase current)
+    {
+        if(current.boardPosition.YPos == 0)
+        {
+            current.IsEvolved = true;
+            return;
+        }
+        foreach (EnemyBase enemy in enemiesOnBoard)
+        {
+            if(current.boardPosition.YPos == enemy.boardPosition.YPos - 1 && enemy.IsEvolved
+                &&current.boardPosition.XPos == enemy.boardPosition.XPos)
+            {
+                current.IsEvolved = true;
+            }
+        }
+    }
+
     public Vector3 BoardPositionToWorldPosition(BoardPosition boardPosition)
     {
-        return bottomRight.transform.position + new Vector3(boardPosition.XPos * 1.30f, 0, boardPosition.YPos * 1.25f);
+        return bottomRight.transform.position + new Vector3(boardPosition.XPos * GridMoveSize.x, 0, boardPosition.YPos * GridMoveSize.y);
     }
 
     private void OnDrawGizmosSelected()
