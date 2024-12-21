@@ -9,13 +9,13 @@ public class AttackTile : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private ParticleSystem[] particleSystems;
 
-    public void Init(int AttackDelay,float AttackTileDestroyTimer = 0.5f)
+    public void Init(float AttackDelay,float AttackTileDestroyTimer = 0.5f)
     {
         StartCoroutine(Attack(AttackDelay,AttackTileDestroyTimer));
     }
 
 
-    private IEnumerator Attack(int AttackDelay, float AttackTileDestroyTimer)
+    private IEnumerator Attack(float AttackDelay, float AttackTileDestroyTimer)
     {
         animator.SetTrigger("PreAttack");
         yield return new WaitForSeconds(AttackDelay);
