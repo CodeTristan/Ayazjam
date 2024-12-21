@@ -4,58 +4,38 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    public float moveSpeed = 5f; // Movement speed
     public int MaxHealth;
     public int CurrentHealth;
     public int Damage = 1;
     public float AttackRange = 1;
     public float AttackCooldown = 1;
     public float AttackTimer = 1;
-    public Vector2 moveInput;
-    public float gridSize = 1f;
-    private Vector3 targetPosition;
-    private bool canMove = true;
-    private bool isMoving = false;
-    public float gridWidth = 8f;
-    public float gridHeight = 8f;
+    public float gridSize = 1f; // Size of each grid cell
+    private Vector3 targetPosition; // Target position for grid movement
+    private bool isMoving = false; // Whether the player is currently moving
+    public float gridWidth = 8f; // Width of the grid
+    public float gridHeight = 8f; // Height of the grid
 
-    private Animator animator;
+    private Animator animator; // Reference to the Animator component
     public Rigidbody rb;
 
     public float currentAttackTimer;
-    private InputControls inputActions; // Yeni Input Sistemi
-
-    private void Awake()
-    {
-        inputActions = new InputControls();
-
-        // Hareket girdisini al
-        inputActions.Player.Movement.performed += ctx =>
-        {
-            Vector2 moveInput = ctx.ReadValue<Vector2>();
-            Move(moveInput);
-        };
-    }
-
-    private void OnEnable()
-    {
-        inputActions.Player.Enable();
-    }
-
-    private void OnDisable()
-    {
-        inputActions.Player.Disable();
-    }
 
     void Start()
     {
         // Baþlangýç pozisyonunu ayarla
         targetPosition = transform.position;
-        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
+        // Eðer karakter hareket etmiyorsa, hareket girdisini kontrol et
+        if (!isMoving)
+        {
+            HandleMovementInput();
+        }
+
         // Karakteri hedef pozisyona doðru hareket ettir
         if (isMoving)
         {
@@ -66,27 +46,40 @@ public class PlayerMovement : MonoBehaviour
             {
                 transform.position = targetPosition; // Pozisyonu tam olarak hizala
                 isMoving = false; // Hareket tamamlandý
-
-                // Hareket tamamlandýðýnda animasyonu durdur (Idle'a geç)
-                animator.SetBool("IsMoving", false);
             }
+        }
+    }
+
+    private void HandleMovementInput()
+    {
+        // WASD veya ok tuþlarýndan hareket girdisini al
+        if (Input.GetKeyDown(KeyCode.W)) // Yukarý hareket
+        {
+            Move(new Vector2(0, 1));
+        }
+        else if (Input.GetKeyDown(KeyCode.S)) // Aþaðý hareket
+        {
+            Move(new Vector2(0, -1));
+        }
+        else if (Input.GetKeyDown(KeyCode.A)) // Sola hareket
+        {
+            Move(new Vector2(-1, 0));
+        }
+        else if (Input.GetKeyDown(KeyCode.D)) // Saða hareket
+        {
+            Move(new Vector2(1, 0));
         }
     }
 
     private void Move(Vector2 moveInput)
     {
-        // Hareket yönünü belirle
-        Vector3 direction = new Vector3(moveInput.x, 0, moveInput.y);
+        // Hareket yönünü hesapla
+        Vector3 direction = new Vector3(moveInput.x, 0, moveInput.y); // Hem X hem de Y ekseninde hareket
 
         // Yeni hedef pozisyonu hesapla
         targetPosition += direction * gridSize;
 
         // Hareketi baþlat
         isMoving = true;
-
-        animator.SetFloat("MoveX", moveInput.x);
-
-
-
     }
 }
