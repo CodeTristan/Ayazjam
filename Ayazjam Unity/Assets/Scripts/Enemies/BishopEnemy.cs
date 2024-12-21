@@ -41,8 +41,8 @@ public class BishopEnemy : EnemyBase
 
         if(currentAttackTimer <= 0 && IsEvolved)
         {
-            StartCoroutine(Ultimate());
             currentAttackTimer = UltimateAttackTimer;
+            StartCoroutine(Ultimate());
         }
     }
 
@@ -93,7 +93,6 @@ public class BishopEnemy : EnemyBase
 
             attackTile.Init(AttackTileDelay);
         }
-        Debug.Log(moveBoardPos.Count);
         Vector3 movedPos = transform.position + new Vector3(MoveVector.x * moveDir * moveBoardPos.Count, 0, MoveVector.y * moveBoardPos.Count);
         
         boardPosition.XPos += moveDir * moveBoardPos.Count;
@@ -119,6 +118,7 @@ public class BishopEnemy : EnemyBase
 
     public override IEnumerator Ultimate()
     {
+        currentAttackTimer = 10000;
         for (int i = 0; i < 8; i+=2)
         {
             for(int j = 0; j < 8; j+=2)
@@ -146,5 +146,7 @@ public class BishopEnemy : EnemyBase
             }
 
         }
+
+        currentAttackTimer = UltimateAttackTimer;
     }
 }

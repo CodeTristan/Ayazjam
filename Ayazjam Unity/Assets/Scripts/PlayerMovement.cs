@@ -11,11 +11,9 @@ public class PlayerMovement : MonoBehaviour
     public float AttackRange = 1;
     public float AttackCooldown = 1;
     public float AttackTimer = 1;
-    public float gridSize = 1f;
+    public Vector2 gridSize;
     private Vector3 targetPosition;
     private bool isMoving = false;
-    public float gridWidth = 8f;
-    public float gridHeight = 8f;
 
     private Animator animator;
     public Rigidbody rb;
@@ -72,13 +70,37 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move(Vector2 moveInput)
     {
+        if(TileManager.instance.playerBoardPos.YPos == 3 && moveInput.y == 1)
+        {
+            TileManager.instance.ShiftTileUp();
+            return;
+        }
+        else if(TileManager.instance.playerBoardPos.YPos == 0 && moveInput.y == -1)
+        {
+            TileManager.instance.ShiftTileDown();
+            return;
+        }
+        else if(TileManager.instance.playerBoardPos.XPos == 7 && moveInput.x == 1)
+        {
+            return;
+        }
+        else if (TileManager.instance.playerBoardPos.XPos == 0 && moveInput.x == -1)
+        {
+            return;
+        }
+
+
+
         // Hareket yönünü hesapla
         Vector3 direction = new Vector3(moveInput.x, 0, moveInput.y); // Hem X hem de Y ekseninde hareket
 
         // Yeni hedef pozisyonu hesapla
-        targetPosition += direction * gridSize;
+        targetPosition += new Vector3(gridSize.x * moveInput.x,0,gridSize.y * moveInput.y);
 
         // Hareketi baþlat
         isMoving = true;
+
+        TileManager.instance.playerBoardPos.XPos += (int)moveInput.x;
+        TileManager.instance.playerBoardPos.YPos += (int)moveInput.y;
     }
 }

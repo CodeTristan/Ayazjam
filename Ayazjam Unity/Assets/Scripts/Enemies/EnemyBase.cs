@@ -23,7 +23,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected float currentAttackTimer;
     protected float currentWalkTimer;
     protected bool isAttacking;
-    protected Vector3 selectedMovePos;
+    public Vector3 selectedMovePos;
 
 
     [SerializeField] protected AttackTile attackTilePrefab;
@@ -34,6 +34,13 @@ public abstract class EnemyBase : MonoBehaviour
     public abstract void Move();
     public abstract void Die();
     public abstract IEnumerator Ultimate();
+
+
+    public void ResetMovementTimer()
+    {
+        currentAttackTimer = AttackTimer;
+        currentWalkTimer = WalkCoolDown;
+    }
 
     public void CalculateBoardPosition(Vector3 movedVector)
     {

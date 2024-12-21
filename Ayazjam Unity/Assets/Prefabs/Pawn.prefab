@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7250526162906446656}
   - component: {fileID: 221848137771469027}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,8 +51,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 19.364252, y: 51.269413, z: 16.312195}
-  m_Center: {x: 1.1634732, y: -15.734703, z: 1.2190783}
+  m_Size: {x: 14.7901535, y: 51.269413, z: 10.5894}
+  m_Center: {x: -0.47787577, y: -15.734702, z: -4.6243677}
 --- !u!1 &7135623818195724483
 GameObject:
   m_ObjectHideFlags: 0
@@ -66,7 +66,7 @@ GameObject:
   - component: {fileID: 4264868703114916595}
   - component: {fileID: 8511300484192024036}
   - component: {fileID: 6183988428508712725}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Pawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,5 +1,58 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1676365419794643826
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4456676612276720369}
+  - component: {fileID: 4317229839527742862}
+  m_Layer: 7
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4456676612276720369
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676365419794643826}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.38268343, y: -0, z: -0, w: 0.92387956}
+  m_LocalPosition: {x: 1.2, y: 0.4, z: 0.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4926883061767577772}
+  m_LocalEulerAnglesHint: {x: -45, y: 0, z: 0}
+--- !u!65 &4317229839527742862
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676365419794643826}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 14.7901535, y: 51.269413, z: 10.5894}
+  m_Center: {x: -0.47787577, y: -15.734702, z: -4.6243677}
 --- !u!1 &3787116369387666827
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,7 +64,8 @@ GameObject:
   - component: {fileID: 4926883061767577772}
   - component: {fileID: 4222073085343900838}
   - component: {fileID: 4160364288463461404}
-  m_Layer: 0
+  - component: {fileID: 3677128675689160862}
+  m_Layer: 7
   m_Name: Rook
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +84,8 @@ Transform:
   m_LocalPosition: {x: 0.614, y: 0.5, z: 4.6}
   m_LocalScale: {x: 0.08, y: 0.08, z: 0.08}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 4456676612276720369}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!212 &4222073085343900838
@@ -103,10 +158,10 @@ MonoBehaviour:
   MaxHealth: 200
   CurrentHealth: 0
   Damage: 1
-  Speed: 1
+  Speed: 2
   AttackRange: 1
-  AttackTimer: 3
-  WalkCoolDown: 0.5
+  AttackTimer: 3.1
+  WalkCoolDown: 3
   MoveAnimSpeed: 0.15
   AttackTileDelay: 2
   IsEvolved: 0
@@ -115,3 +170,30 @@ MonoBehaviour:
   animator: {fileID: 0}
   UltimateSecondAttackDelay: 2
   UltimateAttackTimer: 10
+--- !u!54 &3677128675689160862
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3787116369387666827}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 1

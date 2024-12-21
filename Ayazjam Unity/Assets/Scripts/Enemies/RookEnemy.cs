@@ -110,7 +110,10 @@ public class RookEnemy : EnemyBase
             xPower = 0;
             yPower = 0;
         }
-
+        if(boardPosition.YPos < Speed)
+        {
+            Speed = boardPosition.YPos;
+        }
 
         Vector3 moveVector = new Vector3(MoveVector.x * xPower, 0, MoveVector.y * yPower) * Speed;
         selectedMovePos = transform.position + moveVector;
