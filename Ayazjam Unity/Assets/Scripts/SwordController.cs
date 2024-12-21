@@ -19,7 +19,10 @@ public class SwordController : MonoBehaviour
     public float swingAngle = 45f; // Savurma hareketinin açýsý
     public float attackRadius = 2f; // Saldýrý yarýçapý
     private bool isAttacking = false; // Saldýrý durum kontrolü
-
+    [SerializeField] GameObject topLeftTile;
+    [SerializeField] GameObject topRightTile;
+    [SerializeField] GameObject bottomLeftTile;
+    [SerializeField] GameObject bottomRightTile;
     public Animator swordAnimator;
 
     private void Start()
@@ -53,27 +56,31 @@ public class SwordController : MonoBehaviour
     private void LightTile()
     {
         Vector3 mousePos = Input.mousePosition;
+        bottomLeftTile.SetActive(false);
+        bottomRightTile.SetActive(false);
+        topLeftTile.SetActive(false);
+        topRightTile.SetActive(false);
 
-        if(mousePos.y >= 540) //yukarda
+        if (mousePos.y >= 540) //yukarda
         {
-            if(mousePos.x < 960) //Yukarý Sol
+            if (mousePos.x < 960) //Yukarý Sol
             {
-
+               topLeftTile.SetActive(true);
             }
             else
             {
-
+                topRightTile.SetActive(true);
             }
         }
         else
         {
             if (mousePos.x < 960) //Aþaðý Sol
             {
-
+                bottomLeftTile.SetActive(true);
             }
             else
             {
-
+                bottomRightTile.SetActive(true);
             }
         }
     }

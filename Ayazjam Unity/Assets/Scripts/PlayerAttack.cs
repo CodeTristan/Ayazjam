@@ -1,87 +1,93 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttack : MonoBehaviour
+public class FourRegionAttack : MonoBehaviour
 {
-    public float attackRange = 1.5f; // Þahýn saldýrý menzili (çevresindeki bloklar)
-    public LayerMask enemyLayer; // Sadece Enemy layer'ýný algýlamak için
-    public int damageAmount = 10; // Verilecek hasar miktarý
+    public SpriteRenderer[] regions; // 4 bölgeye ait SpriteRenderer'lar (0: Sol Üst, 1: Sað Üst, 2: Sað Alt, 3: Sol Alt)
+    public Transform[] regionCenters; // 4 bölgenin merkez noktalarý
+    public LayerMask enemyLayer; // Düþmanlarýn Layer'ý
+    public float attackRadius = 2f; // Saldýrý yarýçapý
+    public int damageAmount = 10; // Hasar miktarý
 
-    void Update()
+    private int currentRegionIndex = -1; // Aktif olan bölge (-1: hiçbir bölge aktif deðil)
+
+    private void Update()
     {
-        // Mouse sol týk ile saldýrý
-        if (Input.GetMouseButtonDown(0))
+        Vector3 mousePos = Input.mousePosition;
+
+        // Fare pozisyonuna göre aktif bölgeyi belirle
+        int newRegionIndex = GetRegionIndex(mousePos);
+
+        // Eðer aktif bölge deðiþtiyse görsel efektleri güncelle
+        if (newRegionIndex != currentRegionIndex)
         {
-            Attack();
+            UpdateRegionTransparency(newRegionIndex);
+            currentRegionIndex = newRegionIndex;
+        }
+
+        // Fare sol týklamasýyla saldýrý
+        if (Input.GetMouseButtonDown(0) && currentRegionIndex != -1)
+        {
+            PerformAttack(regionCenters[currentRegionIndex]);
         }
     }
 
-    private void Attack()
+    private int GetRegionIndex(Vector3 mousePos)
     {
-        // Mouse'un baktýðý yönü belirle
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = Camera.main.transform.position.y; // Kamera yüksekliðini ayarla
-        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-
-        // Mouse'un yönüne göre saldýrý yönünü hesapla
-        Vector3 attackDirection = (worldMousePosition - transform.position).normalized;
-
-        // Saldýrý yönünü en yakýn grid yönüne yuvarla
-        Vector3 roundedDirection = new Vector3(
-            Mathf.Round(attackDirection.x),
-            0,
-            Mathf.Round(attackDirection.z)
-        );
-
-        // Çevredeki 3 bloðu belirle
-        Vector3[] attackPositions = new Vector3[3];
-        attackPositions[0] = transform.position + roundedDirection * attackRange; // Ön blok
-        attackPositions[1] = transform.position + Quaternion.Euler(0, 90, 0) * roundedDirection * attackRange; // Sað blok
-        attackPositions[2] = transform.position + Quaternion.Euler(0, -90, 0) * roundedDirection * attackRange; // Sol blok
-
-        // Çevredeki düþmanlara hasar uygula
-        foreach (Vector3 attackPosition in attackPositions)
+        if (mousePos.x < Screen.width / 2) // Sol bölgeler
         {
-            Collider[] hitColliders = Physics.OverlapSphere(attackPosition, 0.5f, enemyLayer);
-            foreach (Collider hitCollider in hitColliders)
+            if (mousePos.y > Screen.height / 2) return 0; // Sol Üst
+            else return 3; // Sol Alt
+        }
+        else // Sað bölgeler
+        {
+            if (mousePos.y > Screen.height / 2) return 1; // Sað Üst
+            else return 2; // Sað Alt
+        }
+    }
+
+    private void UpdateRegionTransparency(int newRegionIndex)
+    {
+        // Tüm bölgelerin þeffaflýðýný sýfýrla
+        for (int i = 0; i < regions.Length; i++)
+        {
+            Color color = regions[i].color;
+            color.a = 1f; // Tam opak
+            regions[i].color = color;
+        }
+
+        // Yeni aktif bölgeyi þeffaflaþtýr
+        if (newRegionIndex >= 0 && newRegionIndex < regions.Length)
+        {
+            Color activeColor = regions[newRegionIndex].color;
+            activeColor.a = 0.5f; // Þeffaflýk
+            regions[newRegionIndex].color = activeColor;
+        }
+    }
+
+    private void PerformAttack(Transform regionCenter)
+    {
+        // Bölgenin merkezinde düþmanlarý bul
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(regionCenter.position, attackRadius, enemyLayer);
+
+        // Düþmanlara hasar ver
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            Debug.Log("Enemy hit: " + enemy.name);
+            var enemyScript = enemy.GetComponent<EnemyBase>();
+            if (enemyScript != null)
             {
-                // Hasar verilebilecek bir obje bulduysak, hasar uygula
-                EnemyBase damageable = hitCollider.GetComponent<EnemyBase>();
-                if (damageable != null)
-                {
-                    damageable.TakeDamage(damageAmount);
-                }
+                enemyScript.TakeDamage(damageAmount);
             }
         }
     }
 
     private void OnDrawGizmos()
     {
-        // Saldýrý alanlarýný görselleþtirmek için
+        // Bölgelerin saldýrý yarýçaplarýný görselleþtir
         Gizmos.color = Color.red;
-
-        if (Application.isPlaying)
+        foreach (Transform center in regionCenters)
         {
-            Vector3 mousePosition = Input.mousePosition;
-            mousePosition.z = Camera.main.transform.position.y;
-            Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            Vector3 attackDirection = (worldMousePosition - transform.position).normalized;
-            Vector3 roundedDirection = new Vector3(
-                Mathf.Round(attackDirection.x),
-                0,
-                Mathf.Round(attackDirection.z)
-            );
-
-            Vector3[] attackPositions = new Vector3[3];
-            attackPositions[0] = transform.position + roundedDirection * attackRange;
-            attackPositions[1] = transform.position + Quaternion.Euler(0, 90, 0) * roundedDirection * attackRange;
-            attackPositions[2] = transform.position + Quaternion.Euler(0, -90, 0) * roundedDirection * attackRange;
-
-            foreach (Vector3 attackPosition in attackPositions)
-            {
-                Gizmos.DrawWireSphere(attackPosition, 0.5f);
-            }
+            Gizmos.DrawWireSphere(center.position, attackRadius);
         }
     }
 }
