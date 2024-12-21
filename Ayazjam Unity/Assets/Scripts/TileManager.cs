@@ -41,6 +41,6 @@ public class TileManager : MonoBehaviour
 
     public Vector3 BoardPositionToWorldPosition(BoardPosition boardPosition)
     {
-        return bottomRight.transform.position + new Vector3(boardPosition.XPos * 1.22f, 0, boardPosition.YPos * 1.22f);
+        return bottomRight.transform.position + new Vector3(boardPosition.XPos * 1.25f, 0, boardPosition.YPos * 1.25f);
     }
 }

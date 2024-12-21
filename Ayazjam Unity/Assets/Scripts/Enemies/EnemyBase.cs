@@ -13,6 +13,8 @@ public abstract class EnemyBase : MonoBehaviour
     public float AttackRange = 1;
     public float AttackTimer = 1;
     public float WalkCoolDown = 1;
+    public float MoveAnimSpeed = 0.15f;
+    public float AttackTileDelay = 1;
 
     public bool IsEvolved;
 
@@ -21,6 +23,9 @@ public abstract class EnemyBase : MonoBehaviour
     protected float currentAttackTimer;
     protected float currentWalkTimer;
     protected bool isAttacking;
+    protected Vector3 selectedMovePos;
+
+
     [SerializeField] protected AttackTile attackTilePrefab;
     [SerializeField] protected Animator animator;
 
@@ -28,7 +33,7 @@ public abstract class EnemyBase : MonoBehaviour
     public abstract IEnumerator Attack();
     public abstract void Move();
     public abstract void Die();
-    public abstract void Ultimate();
+    public abstract IEnumerator Ultimate();
 
     public void CalculateBoardPosition(Vector3 movedVector)
     {
@@ -52,6 +57,7 @@ public abstract class EnemyBase : MonoBehaviour
             IsEvolved = true;
         }
     }
+
 
     public void Init(BoardPosition boardPosition)
     {

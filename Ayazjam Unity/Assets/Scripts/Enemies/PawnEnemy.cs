@@ -4,16 +4,11 @@ using UnityEngine;
 
 public class PawnEnemy : EnemyBase
 {
-    [Header("Pawn")]
-    [SerializeField] private Vector2 AttackVector;
-    public float AttackTileDelay = 1;
-    public float MoveAnimSpeed = 0.2f;
-
-    private Vector3 selectedMove;
-    
+    public float UltimateSecondAttackDelay = 2f;
+    public float UltimateAttackTimer = 5f;
     private void Start()
     {
-        selectedMove = transform.position;
+        selectedMovePos = transform.position;
         CurrentHealth = MaxHealth;
         currentAttackTimer = AttackTimer;
         currentWalkTimer = WalkCoolDown;
@@ -37,9 +32,15 @@ public class PawnEnemy : EnemyBase
             currentWalkTimer = WalkCoolDown;
         }
 
-        if(Vector3.Distance(transform.position,selectedMove) > 0.01f)
+        if(Vector3.Distance(transform.position,selectedMovePos) > 0.01f)
         {
-            transform.position = Vector3.Lerp(transform.position, selectedMove, MoveAnimSpeed);
+            transform.position = Vector3.Lerp(transform.position, selectedMovePos, MoveAnimSpeed);
+        }
+
+        if (currentAttackTimer <= 0 && IsEvolved)
+        {
+            StartCoroutine(Ultimate());
+            currentAttackTimer = UltimateAttackTimer;
         }
     }
 
@@ -54,7 +55,6 @@ public class PawnEnemy : EnemyBase
             AttackTile attackTile = Instantiate(attackTilePrefab, pos, Quaternion.identity);    
             attackTile.transform.eulerAngles = new Vector3(90,0,0);
             attackTile.Init(AttackTileDelay);
-            Debug.Log("LeftPos: " + pos);
         }
         if (attackRight)
         {
@@ -63,7 +63,6 @@ public class PawnEnemy : EnemyBase
             attackTile.transform.eulerAngles = new Vector3(90, 0, 0);
 
             attackTile.Init(AttackTileDelay);
-            Debug.Log("RightPos: " + pos);
         }
         yield return new WaitForSeconds(AttackTileDelay + 0.5f);
         isAttacking = false;
@@ -83,7 +82,7 @@ public class PawnEnemy : EnemyBase
         {
             xPower = 0;
         }
-        else if (boardPosition.XPos == 0 && MoveVector.x > 0)
+        else if (boardPosition.XPos == 7 && MoveVector.x > 0)
         {
             xPower = 0;
         }
@@ -97,7 +96,7 @@ public class PawnEnemy : EnemyBase
 
         Vector3 moveVector = new Vector3(MoveVector.x * xPower, 0, MoveVector.y * yPower) * Speed;
         //transform.position += moveVector;
-        selectedMove = transform.position + moveVector;
+        selectedMovePos = transform.position + moveVector;
         CalculateBoardPosition(moveVector);
 
     }
@@ -113,8 +112,8 @@ public class PawnEnemy : EnemyBase
         }
     }
 
-    public override void Ultimate()
+    public override IEnumerator Ultimate()
     {
-        throw new System.NotImplementedException();
+        yield return new WaitForSeconds(UltimateSecondAttackDelay);
     }
 }
