@@ -1,65 +1,63 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour
 {
+    public BoardPosition boardPosition;
     public int MaxHealth;
     public int CurrentHealth;
     public int Damage = 1;
     public int Speed = 1;
     public float AttackRange = 1;
-    public float AttackCooldown = 1;
     public float AttackTimer = 1;
     public float WalkCoolDown = 1;
 
     public bool IsEvolved;
-    public bool OnLeftEdge;
-    public bool OnRightEdge;
-    public bool OnBottomEdge;
 
     public Vector2 MoveVector;
 
     protected float currentAttackTimer;
     protected float currentWalkTimer;
+    protected bool isAttacking;
     [SerializeField] protected AttackTile attackTilePrefab;
+    [SerializeField] protected Animator animator;
 
     public abstract void TakeDamage(int damage);
-    public abstract void Attack();
+    public abstract IEnumerator Attack();
     public abstract void Move();
     public abstract void Die();
     public abstract void Ultimate();
 
-
-    private void OnTriggerEnter(Collider other)
+    public void CalculateBoardPosition(Vector3 movedVector)
     {
-        if(other.CompareTag("BoardLeft"))
+        int XtilesMoved = 0;
+        int YtilesMoved = 0;
+        if (MoveVector.x != 0)
         {
-            OnLeftEdge = true;
+            XtilesMoved = (int)(movedVector.x / Math.Abs(MoveVector.x));
         }
-        else if(other.CompareTag("BoardRight"))
+
+        if(MoveVector.y != 0)
         {
-            OnRightEdge = true;
+            YtilesMoved = (int)(movedVector.z / Math.Abs(MoveVector.y));
         }
-        else if (other.CompareTag("BoardBottom"))
+
+        boardPosition.XPos += XtilesMoved;
+        boardPosition.YPos += YtilesMoved;
+
+        if(boardPosition.YPos == 0)
         {
-            OnBottomEdge = true;
+            IsEvolved = true;
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void Init(BoardPosition boardPosition)
     {
-        if (other.CompareTag("BoardLeft"))
-        {
-            OnLeftEdge = false;
-        }
-        else if (other.CompareTag("BoardRight"))
-        {
-            OnRightEdge = false;
-        }
-        else if (other.CompareTag("BoardBottom"))
-        {
-            OnBottomEdge = false;
-        }
+        this.boardPosition = boardPosition;
+        currentAttackTimer = AttackTimer;
+        currentWalkTimer = WalkCoolDown;
     }
+
 }

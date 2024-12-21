@@ -2,10 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class BoardPosition
+{
+    [Range(0,7)]
+    public int XPos;
+
+    [Range(0,7)]
+    public int YPos;
+}
 public class TileManager : MonoBehaviour
 {
     public static TileManager instance;
 
+    [SerializeField] private GameObject bottomRight;
     public int TileCount;
 
 
@@ -29,8 +39,8 @@ public class TileManager : MonoBehaviour
 
     }
 
-    private void Start()
+    public Vector3 BoardPositionToWorldPosition(BoardPosition boardPosition)
     {
-        
+        return bottomRight.transform.position + new Vector3(boardPosition.XPos * 1.22f, 0, boardPosition.YPos * 1.22f);
     }
 }
