@@ -12,15 +12,54 @@ public abstract class EnemyBase : MonoBehaviour
     public float AttackCooldown = 1;
     public float AttackTimer = 1;
     public float WalkCoolDown = 1;
+
     public bool IsEvolved;
+    public bool OnLeftEdge;
+    public bool OnRightEdge;
+    public bool OnBottomEdge;
+
     public Vector2 MoveVector;
 
     protected float currentAttackTimer;
     protected float currentWalkTimer;
+    [SerializeField] protected AttackTile attackTilePrefab;
 
     public abstract void TakeDamage(int damage);
     public abstract void Attack();
     public abstract void Move();
     public abstract void Die();
     public abstract void Ultimate();
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("BoardLeft"))
+        {
+            OnLeftEdge = true;
+        }
+        else if(other.CompareTag("BoardRight"))
+        {
+            OnRightEdge = true;
+        }
+        else if (other.CompareTag("BoardBottom"))
+        {
+            OnBottomEdge = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("BoardLeft"))
+        {
+            OnLeftEdge = false;
+        }
+        else if (other.CompareTag("BoardRight"))
+        {
+            OnRightEdge = false;
+        }
+        else if (other.CompareTag("BoardBottom"))
+        {
+            OnBottomEdge = false;
+        }
+    }
 }

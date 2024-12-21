@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PawnEnemy : EnemyBase
 {
-
+    [Header("Pawn")]
+    [SerializeField] private Vector2 AttackVector;
     private void Start()
     {
         
@@ -29,7 +30,7 @@ public class PawnEnemy : EnemyBase
 
     public override void Attack()
     {
-        Debug.Log("Attack");
+        
     }
 
     public override void Die()
@@ -39,8 +40,23 @@ public class PawnEnemy : EnemyBase
 
     public override void Move()
     {
-        //Later check if pawn is on edge of map
-        transform.position += new Vector3(MoveVector.x, 0 ,MoveVector.y) * Speed;
+        int xPower = 1;
+        int yPower = 1;
+        if (OnLeftEdge && MoveVector.x < 0)
+        {
+            xPower = 0;
+        }
+        else if (OnRightEdge && MoveVector.x > 0)
+        {
+            xPower = 0;
+        }
+        else if (OnBottomEdge)
+        {
+            xPower = 0;
+            yPower = 0;
+        }
+
+        transform.position += new Vector3(MoveVector.x * xPower, 0 ,MoveVector.y * yPower) * Speed;
     }
 
     public override void TakeDamage(int damage)
