@@ -82,7 +82,7 @@ public class TileManager : MonoBehaviour
         {
             enemy.isActive = false;
             
-            if (!enemy.IsEvolved && (enemy.IsEvolved && enemy.GetType() == typeof(QueenEnemy)))
+            if (!enemy.IsEvolved)
             {
                 if (enemiesOnBoard.Contains(enemy))
                 {
@@ -114,7 +114,7 @@ public class TileManager : MonoBehaviour
 
         foreach (EnemyBase enemy in allEnemies)
         {
-            if (!enemy.IsEvolved || (enemy.IsEvolved && enemy.GetType() == typeof(QueenEnemy)))
+            if (!enemy.IsEvolved)
             {
                 if (enemiesOnBoard.Contains(enemy))
                 {
