@@ -92,7 +92,10 @@ public class TileManager : MonoBehaviour
                 enemy.selectedMovePos = enemy.transform.position + new Vector3(0, 0, -GridMoveSize.y);
                 enemy.ResetMovementTimer();
             }
-
+            else if(enemy.IsEvolved && enemy.GetType() == typeof(QueenEnemy))
+            {
+                enemy.selectedMovePos = enemy.transform.position + new Vector3(0, 0, -GridMoveSize.y);
+            }
         }
 
         foreach (EnemyBase enemy in enemiesOnBoard)
@@ -122,6 +125,10 @@ public class TileManager : MonoBehaviour
                 }
                 enemy.selectedMovePos = enemy.transform.position + new Vector3(0, 0, GridMoveSize.y);
                 enemy.ResetMovementTimer();
+            }
+            else if (enemy.IsEvolved && enemy.GetType() == typeof(QueenEnemy))
+            {
+                enemy.selectedMovePos = enemy.transform.position + new Vector3(0, 0, GridMoveSize.y);
             }
 
         }
