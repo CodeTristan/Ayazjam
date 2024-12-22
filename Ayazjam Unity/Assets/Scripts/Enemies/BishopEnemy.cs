@@ -18,6 +18,10 @@ public class BishopEnemy : EnemyBase
 
     private void Update()
     {
+        if (!isActive)
+        {
+            return;
+        }
         if (!isAttacking)
         {
             currentAttackTimer -= Time.deltaTime;
@@ -38,8 +42,13 @@ public class BishopEnemy : EnemyBase
         {
             transform.position = Vector3.Lerp(transform.position, selectedMovePos, MoveAnimSpeed);
         }
+        else if(animator.GetBool("IsMoving"))
+        {
+            transform.position = selectedMovePos;
+            animator.SetBool("IsMoving",false);
+        }
 
-        if(currentAttackTimer <= 0 && IsEvolved)
+        if (currentAttackTimer <= 0 && IsEvolved)
         {
             currentAttackTimer = UltimateAttackTimer;
             StartCoroutine(Ultimate());
@@ -53,7 +62,9 @@ public class BishopEnemy : EnemyBase
 
     public override void Die()
     {
-        throw new System.NotImplementedException();
+        Destroy(gameObject);
+        TileManager.instance.enemiesOnBoard.Remove(this);
+
     }
 
     public override void Move()
@@ -61,6 +72,8 @@ public class BishopEnemy : EnemyBase
         if (boardPosition.YPos == 0)
             return;
 
+        animator.SetTrigger("MovingStarted");
+        animator.SetBool("IsMoving", true);
         int moveDir = 1;
         List<BoardPosition> moveBoardPos = new List<BoardPosition>();
         if(boardPosition.XPos >=4 && boardPosition.YPos != 0)
@@ -114,7 +127,13 @@ public class BishopEnemy : EnemyBase
 
     public override void TakeDamage(int damage)
     {
-        throw new System.NotImplementedException();
+        CurrentHealth -= damage;
+        animator.SetTrigger("GotDamaged");
+
+        if (CurrentHealth <= 0)
+        {
+            Die();
+        }
     }
 
     public override IEnumerator Ultimate()

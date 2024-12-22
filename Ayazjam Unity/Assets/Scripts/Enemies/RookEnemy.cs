@@ -17,6 +17,10 @@ public class RookEnemy : EnemyBase
 
     private void Update()
     {
+        if (!isActive)
+        {
+            return;
+        }
         if (!isAttacking)
         {
             currentAttackTimer -= Time.deltaTime;
@@ -89,7 +93,9 @@ public class RookEnemy : EnemyBase
 
     public override void Die()
     {
-        throw new System.NotImplementedException();
+        Destroy(gameObject);
+        TileManager.instance.enemiesOnBoard.Remove(this);
+
     }
 
     public override void Move()
@@ -118,13 +124,19 @@ public class RookEnemy : EnemyBase
         Vector3 moveVector = new Vector3(MoveVector.x * xPower, 0, MoveVector.y * yPower) * Speed;
         selectedMovePos = transform.position + moveVector;
         CalculateBoardPosition(moveVector);
-
+        animator.SetTrigger("IsMoving");
         TileManager.instance.CheckIfEvolvedEnemyAhead(this);
     }
 
     public override void TakeDamage(int damage)
     {
-        throw new System.NotImplementedException();
+        CurrentHealth -= damage;
+        animator.SetTrigger("GotDamaged");
+
+        if (CurrentHealth <= 0)
+        {
+            Die();
+        }
     }
 
     public override IEnumerator Ultimate()

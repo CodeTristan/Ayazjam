@@ -16,7 +16,11 @@ public class PawnEnemy : EnemyBase
 
     private void Update()
     {
-        if(!isAttacking)
+        if(!isActive)
+        {
+            return;
+        }
+        if (!isAttacking)
         {
             currentAttackTimer -= Time.deltaTime;
             currentWalkTimer -= Time.deltaTime;
@@ -72,8 +76,8 @@ public class PawnEnemy : EnemyBase
     {
         //Maybe add a death animation
         Destroy(gameObject);
+        TileManager.instance.enemiesOnBoard.Remove(this);
     }
-
     public override void Move()
     {
         int xPower = 1;
@@ -92,12 +96,15 @@ public class PawnEnemy : EnemyBase
             xPower = 0;
             yPower = 0;
         }
-
+        if(TileManager.instance.AnyEnemyPresent(new BoardPosition { XPos = boardPosition.XPos, YPos = boardPosition.YPos - 1 }))
+        {
+            yPower = 0;
+        }
 
         Vector3 moveVector = new Vector3(MoveVector.x * xPower, 0, MoveVector.y * yPower) * Speed;
-        //transform.position += moveVector;
         selectedMovePos = transform.position + moveVector;
         CalculateBoardPosition(moveVector);
+        animator.SetTrigger("MovingStart");
 
         TileManager.instance.CheckIfEvolvedEnemyAhead(this);
 

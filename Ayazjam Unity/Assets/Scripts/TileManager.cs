@@ -36,6 +36,7 @@ public class TileManager : MonoBehaviour
         instance = this;
         enemiesOnBoard = new List<EnemyBase>();
         GenerateTiles();
+        getEnemiesOnBoard();
     }
 
     private void GenerateTiles()
@@ -112,6 +113,10 @@ public class TileManager : MonoBehaviour
 
     private void getEnemiesOnBoard()
     {
+        foreach (var item in enemiesOnBoard)
+        {
+            item.isActive = false;
+        }
         enemiesOnBoard.Clear();
         Collider[] colliders = Physics.OverlapBox(transform.position, collisionBoxSize);
         foreach (Collider collider in colliders)
@@ -121,6 +126,23 @@ public class TileManager : MonoBehaviour
                 enemiesOnBoard.Add(collider.transform.parent.GetComponent<EnemyBase>());
             }
         }
+        foreach (var item in enemiesOnBoard)
+        {
+            item.isActive = true;
+        }
+    }
+
+    public bool AnyEnemyPresent(BoardPosition position)
+    {
+        foreach (EnemyBase enemy in enemiesOnBoard)
+        {
+            if (enemy.boardPosition.XPos == position.XPos && enemy.boardPosition.YPos == position.YPos)
+            {
+                return true;
+            }
+        }
+
+        return position.YPos == playerBoardPos.YPos && position.XPos == playerBoardPos.XPos;
     }
 
     public void CheckIfEvolvedEnemyAhead(EnemyBase current)
@@ -132,7 +154,7 @@ public class TileManager : MonoBehaviour
         }
         foreach (EnemyBase enemy in enemiesOnBoard)
         {
-            if(current.boardPosition.YPos == enemy.boardPosition.YPos - 1 && enemy.IsEvolved
+            if(current.boardPosition.YPos - 1 == enemy.boardPosition.YPos && enemy.IsEvolved
                 &&current.boardPosition.XPos == enemy.boardPosition.XPos)
             {
                 current.IsEvolved = true;

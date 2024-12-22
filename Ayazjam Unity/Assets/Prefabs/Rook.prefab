@@ -65,6 +65,7 @@ GameObject:
   - component: {fileID: 4222073085343900838}
   - component: {fileID: 4160364288463461404}
   - component: {fileID: 3677128675689160862}
+  - component: {fileID: 2203775335908783921}
   m_Layer: 7
   m_Name: Rook
   m_TagString: Untagged
@@ -165,9 +166,10 @@ MonoBehaviour:
   MoveAnimSpeed: 0.15
   AttackTileDelay: 2
   IsEvolved: 0
-  MoveVector: {x: 0, y: -1.27}
+  MoveVector: {x: 0, y: -1.28}
+  selectedMovePos: {x: 0, y: 0, z: 0}
   attackTilePrefab: {fileID: 2869062456795461292, guid: ff38ecd634bf91643b709139e6670be8, type: 3}
-  animator: {fileID: 0}
+  animator: {fileID: 2203775335908783921}
   UltimateSecondAttackDelay: 2
   UltimateAttackTimer: 10
 --- !u!54 &3677128675689160862
@@ -197,3 +199,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!95 &2203775335908783921
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3787116369387666827}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5bf6623200ee55f43b9a7acd28040e6e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

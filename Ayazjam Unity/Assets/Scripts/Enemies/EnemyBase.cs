@@ -17,7 +17,7 @@ public abstract class EnemyBase : MonoBehaviour
     public float AttackTileDelay = 1;
 
     public bool IsEvolved;
-
+    public bool isActive;
     public Vector2 MoveVector;
 
     protected float currentAttackTimer;

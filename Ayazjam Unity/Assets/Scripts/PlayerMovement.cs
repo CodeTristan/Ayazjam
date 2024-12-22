@@ -104,7 +104,11 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
-
+        else if(TileManager.instance.AnyEnemyPresent(new BoardPosition { XPos = TileManager.instance.playerBoardPos.XPos + (int)moveInput.x, 
+                                                                    YPos = TileManager.instance.playerBoardPos.YPos + (int)moveInput.y}))
+        {
+            return;
+        }
         // Yeni hedef pozisyonu hesapla
         targetPosition = transform.position + new Vector3(gridSize.x * moveInput.x,0,gridSize.y * moveInput.y);
 
