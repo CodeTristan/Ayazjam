@@ -123,6 +123,101 @@ public class PawnEnemy : EnemyBase
 
     public override IEnumerator Ultimate()
     {
+        int random = Random.Range(0, 2);
+
+        if(random == 0)
+        {
+            StartCoroutine(BishopUltimate());
+        }
+        else
+        {
+            StartCoroutine(RookUltimate());
+        }
         yield return new WaitForSeconds(UltimateSecondAttackDelay);
+    }
+
+
+    private IEnumerator BishopUltimate()
+    {
+        currentAttackTimer = 10000;
+        for (int i = 0; i < 8; i += 2)
+        {
+            for (int j = 0; j < 8; j += 2)
+            {
+                Vector3 pos = TileManager.instance.BoardPositionToWorldPosition(new BoardPosition { XPos = i, YPos = j });
+                AttackTile attackTile = Instantiate(attackTilePrefab, pos, Quaternion.identity);
+                attackTile.transform.eulerAngles = new Vector3(90, 0, 0);
+
+                attackTile.Init(AttackTileDelay);
+            }
+
+        }
+
+        yield return new WaitForSeconds(UltimateSecondAttackDelay);
+
+        for (int i = 1; i < 8; i += 2)
+        {
+            for (int j = 1; j < 8; j += 2)
+            {
+                Vector3 pos = TileManager.instance.BoardPositionToWorldPosition(new BoardPosition { XPos = i, YPos = j });
+                AttackTile attackTile = Instantiate(attackTilePrefab, pos, Quaternion.identity);
+                attackTile.transform.eulerAngles = new Vector3(90, 0, 0);
+
+                attackTile.Init(AttackTileDelay);
+            }
+
+        }
+
+        currentAttackTimer = UltimateAttackTimer;
+    }
+    private IEnumerator RookUltimate()
+    {
+        int xPos = 0;
+        int yPos = 0;
+        currentAttackTimer = 10000;
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = xPos; j < 4; j++)
+            {
+                Vector3 pos = TileManager.instance.BoardPositionToWorldPosition(new BoardPosition { XPos = j, YPos = yPos });
+                AttackTile attackTile = Instantiate(attackTilePrefab, pos, Quaternion.identity);
+                attackTile.transform.eulerAngles = new Vector3(90, 0, 0);
+                attackTile.Init(AttackTileDelay);
+
+                Vector3 pos2 = TileManager.instance.BoardPositionToWorldPosition(new BoardPosition { XPos = 7 - j, YPos = 7 - yPos });
+                AttackTile attackTile2 = Instantiate(attackTilePrefab, pos2, Quaternion.identity);
+                attackTile2.transform.eulerAngles = new Vector3(90, 0, 0);
+                attackTile2.Init(AttackTileDelay);
+            }
+            xPos++;
+            yPos++;
+
+            yield return new WaitForSeconds(UltimateSecondAttackDelay);
+        }
+
+        xPos = 7;
+        yPos = 0;
+        for (int i = 7; i > 3; i--)
+        {
+            for (int j = xPos; j > 3; j--)
+            {
+                Vector3 pos = TileManager.instance.BoardPositionToWorldPosition(new BoardPosition { XPos = j, YPos = yPos });
+                AttackTile attackTile = Instantiate(attackTilePrefab, pos, Quaternion.identity);
+                attackTile.transform.eulerAngles = new Vector3(90, 0, 0);
+                attackTile.Init(AttackTileDelay);
+
+                Vector3 pos2 = TileManager.instance.BoardPositionToWorldPosition(new BoardPosition { XPos = 7 - j, YPos = 7 - yPos });
+                AttackTile attackTile2 = Instantiate(attackTilePrefab, pos2, Quaternion.identity);
+                attackTile2.transform.eulerAngles = new Vector3(90, 0, 0);
+                attackTile2.Init(AttackTileDelay);
+            }
+            xPos--;
+            yPos++;
+
+            yield return new WaitForSeconds(UltimateSecondAttackDelay);
+        }
+
+        currentAttackTimer = UltimateAttackTimer;
     }
 }

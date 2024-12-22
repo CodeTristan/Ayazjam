@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RookEnemy : EnemyBase
+public class QueenEnemy : EnemyBase
 {
     public float UltimateSecondAttackDelay = 2f;
     public float UltimateAttackTimer = 5f;
@@ -13,6 +13,7 @@ public class RookEnemy : EnemyBase
         CurrentHealth = MaxHealth;
         currentAttackTimer = AttackTimer;
         currentWalkTimer = WalkCoolDown;
+        IsEvolved = true;
     }
 
     private void Update()
@@ -44,88 +45,26 @@ public class RookEnemy : EnemyBase
 
         if (currentAttackTimer <= 0 && IsEvolved)
         {
-            currentAttackTimer = UltimateAttackTimer;
             StartCoroutine(Ultimate());
+            currentAttackTimer = UltimateAttackTimer;
         }
     }
+
     public override IEnumerator Attack()
     {
-        isAttacking = true;
-        int rightTiles = 7 - boardPosition.XPos;
-        int leftTiles = boardPosition.XPos;
-
-        int upTiles = 7 - boardPosition.YPos;
-        int downTiles = boardPosition.YPos;
-
-        for (int i = 1; i <= rightTiles; i++)
-        {
-            Vector3 pos = TileManager.instance.BoardPositionToWorldPosition(new BoardPosition { XPos = boardPosition.XPos + i, YPos = boardPosition.YPos });
-            AttackTile attackTile = Instantiate(attackTilePrefab, pos, Quaternion.identity);
-            attackTile.transform.eulerAngles = new Vector3(90, 0, 0);
-            attackTile.Init(AttackTileDelay);
-        }
-        for (int i = 1; i <= leftTiles; i++)
-        {
-            Vector3 pos = TileManager.instance.BoardPositionToWorldPosition(new BoardPosition { XPos = boardPosition.XPos - i, YPos = boardPosition.YPos });
-            AttackTile attackTile = Instantiate(attackTilePrefab, pos, Quaternion.identity);
-            attackTile.transform.eulerAngles = new Vector3(90, 0, 0);
-            attackTile.Init(AttackTileDelay);
-        }
-        for (int i = 1; i <= upTiles; i++)
-        {
-            Vector3 pos = TileManager.instance.BoardPositionToWorldPosition(new BoardPosition { XPos = boardPosition.XPos, YPos = boardPosition.YPos + i });
-            AttackTile attackTile = Instantiate(attackTilePrefab, pos, Quaternion.identity);
-            attackTile.transform.eulerAngles = new Vector3(90, 0, 0);
-            attackTile.Init(AttackTileDelay);
-        }
-        for (int i = 1; i <= downTiles; i++)
-        {
-            Vector3 pos = TileManager.instance.BoardPositionToWorldPosition(new BoardPosition { XPos = boardPosition.XPos, YPos = boardPosition.YPos - i });
-            AttackTile attackTile = Instantiate(attackTilePrefab, pos, Quaternion.identity);
-            attackTile.transform.eulerAngles = new Vector3(90, 0, 0);
-            attackTile.Init(AttackTileDelay);
-        }
-
-        yield return new WaitForSeconds(AttackTileDelay + 0.5f);
-        isAttacking = false;
-
+        throw new System.NotImplementedException();
     }
 
     public override void Die()
     {
+        //Maybe add a death animation
         Destroy(gameObject);
         TileManager.instance.enemiesOnBoard.Remove(this);
-
     }
 
     public override void Move()
     {
-        int xPower = 1;
-        int yPower = 1;
-        if (boardPosition.XPos == 0 && MoveVector.x < 0)
-        {
-            xPower = 0;
-        }
-        else if (boardPosition.XPos == 7 && MoveVector.x > 0)
-        {
-            xPower = 0;
-        }
-
-        if (boardPosition.YPos == 0)
-        {
-            xPower = 0;
-            yPower = 0;
-        }
-        if(boardPosition.YPos < Speed)
-        {
-            Speed = boardPosition.YPos;
-        }
-
-        Vector3 moveVector = new Vector3(MoveVector.x * xPower, 0, MoveVector.y * yPower) * Speed;
-        selectedMovePos = transform.position + moveVector;
-        CalculateBoardPosition(moveVector);
-        animator.SetTrigger("IsMoving");
-        TileManager.instance.CheckIfEvolvedEnemyAhead(this);
+        throw new System.NotImplementedException();
     }
 
     public override void TakeDamage(int damage)
@@ -141,6 +80,55 @@ public class RookEnemy : EnemyBase
 
     public override IEnumerator Ultimate()
     {
+        int random = Random.Range(0, 2);
+
+        if (random == 0)
+        {
+            StartCoroutine(BishopUltimate());
+        }
+        else
+        {
+            StartCoroutine(RookUltimate());
+        }
+        yield return new WaitForSeconds(UltimateSecondAttackDelay);
+    }
+
+
+    private IEnumerator BishopUltimate()
+    {
+        currentAttackTimer = 10000;
+        for (int i = 0; i < 8; i += 2)
+        {
+            for (int j = 0; j < 8; j += 2)
+            {
+                Vector3 pos = TileManager.instance.BoardPositionToWorldPosition(new BoardPosition { XPos = i, YPos = j });
+                AttackTile attackTile = Instantiate(attackTilePrefab, pos, Quaternion.identity);
+                attackTile.transform.eulerAngles = new Vector3(90, 0, 0);
+
+                attackTile.Init(AttackTileDelay);
+            }
+
+        }
+
+        yield return new WaitForSeconds(UltimateSecondAttackDelay);
+
+        for (int i = 1; i < 8; i += 2)
+        {
+            for (int j = 1; j < 8; j += 2)
+            {
+                Vector3 pos = TileManager.instance.BoardPositionToWorldPosition(new BoardPosition { XPos = i, YPos = j });
+                AttackTile attackTile = Instantiate(attackTilePrefab, pos, Quaternion.identity);
+                attackTile.transform.eulerAngles = new Vector3(90, 0, 0);
+
+                attackTile.Init(AttackTileDelay);
+            }
+
+        }
+
+        currentAttackTimer = UltimateAttackTimer;
+    }
+    private IEnumerator RookUltimate()
+    {
         int xPos = 0;
         int yPos = 0;
         currentAttackTimer = 10000;
@@ -154,7 +142,7 @@ public class RookEnemy : EnemyBase
                 attackTile.transform.eulerAngles = new Vector3(90, 0, 0);
                 attackTile.Init(AttackTileDelay);
 
-                Vector3 pos2 = TileManager.instance.BoardPositionToWorldPosition(new BoardPosition { XPos = 7-j, YPos = 7-yPos });
+                Vector3 pos2 = TileManager.instance.BoardPositionToWorldPosition(new BoardPosition { XPos = 7 - j, YPos = 7 - yPos });
                 AttackTile attackTile2 = Instantiate(attackTilePrefab, pos2, Quaternion.identity);
                 attackTile2.transform.eulerAngles = new Vector3(90, 0, 0);
                 attackTile2.Init(AttackTileDelay);
@@ -189,4 +177,6 @@ public class RookEnemy : EnemyBase
 
         currentAttackTimer = UltimateAttackTimer;
     }
+
+
 }

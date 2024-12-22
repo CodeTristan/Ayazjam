@@ -38,9 +38,18 @@ public class MusicManager : MonoBehaviour
         instance = this;
         source.mute = isMuted;
         SoundEffects = new List<SoundEffect>();
-        PlayMusic("General Theme");
+        //PlayMusic("General Theme");
 
         DontDestroyOnLoad(gameObject);
+    }
+
+    public IEnumerator PlayMusics()
+    {
+        foreach (var item in musics)
+        {
+            PlayMusic(item.name);
+            yield return new WaitForSeconds(item.clip.length);
+        }
     }
     public void PlayMusic(string name,bool CheckSameMusic = false)
     {

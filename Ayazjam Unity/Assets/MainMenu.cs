@@ -19,7 +19,7 @@ public class MainMenu : MonoBehaviour
         animator.SetTrigger("Start");
         yield return new WaitForSeconds(0.9f);
         canvas.enabled = false;
-        MusicManager.instance.PlayMusic("General Theme");
+        StartCoroutine(MusicManager.instance.PlayMusics());
         videoPlayer.Play();
         yield return new WaitForSeconds(36f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
