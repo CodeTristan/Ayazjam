@@ -168,6 +168,9 @@ public class TileManager : MonoBehaviour
 
     public void CheckIfEvolvedEnemyAhead(EnemyBase current)
     {
+        if (!current.isActive)
+            return;
+
         if(current.boardPosition.YPos == 0)
         {
             current.IsEvolved = true;
