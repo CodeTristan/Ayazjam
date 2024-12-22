@@ -79,14 +79,7 @@ public class TileManager : MonoBehaviour
 
         foreach (EnemyBase enemy in allEnemies)
         {
-            if (enemy.boardPosition.YPos == 7)
-            {
-                enemy.isActive = false;
-            }
-            else
-            {
-                enemy.isActive = true;
-            }
+            enemy.isActive = false;
             if (!enemy.IsEvolved)
             {
                 enemy.boardPosition.YPos -= 1;
@@ -95,6 +88,11 @@ public class TileManager : MonoBehaviour
                 CheckIfEvolvedEnemyAhead(enemy);
             }
 
+        }
+
+        foreach (EnemyBase enemy in enemiesOnBoard)
+        {
+            enemy.isActive = true;
         }
 
         
@@ -111,14 +109,6 @@ public class TileManager : MonoBehaviour
 
         foreach (EnemyBase enemy in allEnemies)
         {
-            if(enemy.boardPosition.YPos == 7)
-            {
-                enemy.isActive = false;
-            }
-            else
-            {
-                enemy.isActive = true;
-            }
             if (!enemy.IsEvolved)
             {
                 enemy.boardPosition.YPos += 1;
@@ -128,6 +118,10 @@ public class TileManager : MonoBehaviour
 
         }
 
+        foreach (EnemyBase enemy in enemiesOnBoard)
+        {
+            enemy.isActive = true;
+        }
 
     }
 
