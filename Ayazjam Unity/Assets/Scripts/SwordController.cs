@@ -142,6 +142,7 @@ public class SwordController : MonoBehaviour
         if (swordAnimator != null)
         {
             swordAnimator.SetTrigger("Attack");
+            MusicManager.instance.PlaySound("sword");
         }
         else
         {

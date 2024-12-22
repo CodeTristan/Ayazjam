@@ -27,6 +27,7 @@ public class TileManager : MonoBehaviour
     public int currentTileIndex = 0;
 
     public List<EnemyBase> enemiesOnBoard;
+    public List<EnemyBase> allEnemies;
 
     private Vector3 Target;
 
@@ -35,6 +36,9 @@ public class TileManager : MonoBehaviour
     {
         instance = this;
         enemiesOnBoard = new List<EnemyBase>();
+        allEnemies = new List<EnemyBase>();
+
+        allEnemies.AddRange(FindObjectsOfType<EnemyBase>());
         GenerateTiles();
         getEnemiesOnBoard();
     }
@@ -73,9 +77,17 @@ public class TileManager : MonoBehaviour
 
         getEnemiesOnBoard();
 
-        foreach (EnemyBase enemy in enemiesOnBoard)
+        foreach (EnemyBase enemy in allEnemies)
         {
-            if(!enemy.IsEvolved)
+            if (enemy.boardPosition.YPos == 7)
+            {
+                enemy.isActive = false;
+            }
+            else
+            {
+                enemy.isActive = true;
+            }
+            if (!enemy.IsEvolved)
             {
                 enemy.boardPosition.YPos -= 1;
                 enemy.selectedMovePos = enemy.transform.position + new Vector3(0, 0, -GridMoveSize.y);
@@ -97,13 +109,17 @@ public class TileManager : MonoBehaviour
 
         getEnemiesOnBoard();
 
-        foreach (EnemyBase enemy in enemiesOnBoard)
+        foreach (EnemyBase enemy in allEnemies)
         {
             if(enemy.boardPosition.YPos == 7)
-            { 
-                //enemy can move iptal
+            {
+                enemy.isActive = false;
             }
-            if(!enemy.IsEvolved)
+            else
+            {
+                enemy.isActive = true;
+            }
+            if (!enemy.IsEvolved)
             {
                 enemy.boardPosition.YPos += 1;
                 enemy.selectedMovePos = enemy.transform.position + new Vector3(0, 0, GridMoveSize.y);

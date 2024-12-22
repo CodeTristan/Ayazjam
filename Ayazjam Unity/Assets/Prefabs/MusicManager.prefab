@@ -46,12 +46,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundEffectPrefab: {fileID: 4597722672611440412, guid: cf52b33098a0dfa48b151160ce7a5292, type: 3}
-  isMuted: 1
+  isMuted: 0
   MusicVolume: 100
   SoundVolume: 100
   CurrentMusic: 
-  musics: []
-  sounds: []
+  musics:
+  - name: General Theme
+    clip: {fileID: 8300000, guid: 4e9c903eec524a74cbb1275efbf5b73e, type: 3}
+    volume: 1
+    pitch: 1
+    isLoop: 0
+  - name: General Theme 2
+    clip: {fileID: 8300000, guid: 78a92ef522398c44bb6aada47cacbae9, type: 3}
+    volume: 1
+    pitch: 1
+    isLoop: 0
+  sounds:
+  - name: bomb
+    clip: {fileID: 8300000, guid: 7265ded7f2f94dd4cb891723cb37a589, type: 3}
+    volume: 0.238
+    pitch: 1
+    isLoop: 0
+  - name: laugh
+    clip: {fileID: 8300000, guid: 927838f560aebdc40bbab5ca53c17f61, type: 3}
+    volume: 1
+    pitch: 1
+    isLoop: 0
+  - name: sword
+    clip: {fileID: 8300000, guid: bd2629be35d21b3469b2e1a5faa94e43, type: 3}
+    volume: 1
+    pitch: 1
+    isLoop: 0
   source: {fileID: 764840450735564604}
   SoundEffects: []
 --- !u!82 &764840450735564604

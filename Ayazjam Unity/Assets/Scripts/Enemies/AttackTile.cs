@@ -21,6 +21,7 @@ public class AttackTile : MonoBehaviour
         yield return new WaitForSeconds(AttackDelay);
         animator.SetTrigger("Attack");
         ActivateParticles();
+        MusicManager.instance.PlaySound("bomb");
         attackCollider.enabled = true;
         yield return new WaitForSeconds(AttackTileDestroyTimer);
         Destroy(gameObject);
