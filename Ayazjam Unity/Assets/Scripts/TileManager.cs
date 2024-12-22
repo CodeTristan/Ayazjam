@@ -64,10 +64,13 @@ public class TileManager : MonoBehaviour
 
     public void ShiftTileUp()
     {
-        if (currentTileIndex == (TileCount-1) * 10.25f - 5)
+        if (currentTileIndex >= (TileCount-1) * 10.25f - 9)
         {
             return;
         }
+        Target = boardHolder.transform.position + new Vector3(0, 0, -GridMoveSize.y);
+        currentTileIndex++;
+
         getEnemiesOnBoard();
 
         foreach (EnemyBase enemy in enemiesOnBoard)
@@ -82,14 +85,16 @@ public class TileManager : MonoBehaviour
 
         }
 
-        Target = boardHolder.transform.position + new Vector3(0, 0, -GridMoveSize.y);
-        currentTileIndex++;
+        
     }
 
     public void ShiftTileDown()
     {
         if (currentTileIndex == 0)
             return;
+        Target = boardHolder.transform.position + new Vector3(0, 0, GridMoveSize.y);
+        currentTileIndex--;
+
         getEnemiesOnBoard();
 
         foreach (EnemyBase enemy in enemiesOnBoard)
@@ -107,8 +112,7 @@ public class TileManager : MonoBehaviour
 
         }
 
-        Target = boardHolder.transform.position + new Vector3(0, 0, GridMoveSize.y);
-        currentTileIndex--;
+
     }
 
     private void getEnemiesOnBoard()

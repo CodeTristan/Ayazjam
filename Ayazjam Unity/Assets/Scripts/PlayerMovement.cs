@@ -98,12 +98,14 @@ public class PlayerMovement : MonoBehaviour
         {
             currentMovementTimer = MovementTimer;
         }
-        if (TileManager.instance.playerBoardPos.YPos == 3 && moveInput.y == 1)
+        if (TileManager.instance.playerBoardPos.YPos == 3 && moveInput.y == 1 
+            && TileManager.instance.currentTileIndex < (TileManager.instance.TileCount * 10) - 8)
         {
             TileManager.instance.ShiftTileUp();
             return;
         }
-        else if(TileManager.instance.playerBoardPos.YPos == 0 && moveInput.y == -1)
+        else if(TileManager.instance.playerBoardPos.YPos == 0 && moveInput.y == -1
+            && TileManager.instance.currentTileIndex < (TileManager.instance.TileCount * 10) - 8)
         {
             TileManager.instance.ShiftTileDown();
             return;
