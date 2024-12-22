@@ -80,12 +80,16 @@ public class TileManager : MonoBehaviour
         foreach (EnemyBase enemy in allEnemies)
         {
             enemy.isActive = false;
+            
             if (!enemy.IsEvolved)
             {
-                enemy.boardPosition.YPos -= 1;
+                if (enemiesOnBoard.Contains(enemy))
+                {
+                    enemy.boardPosition.YPos -= 1;
+                    CheckIfEvolvedEnemyAhead(enemy);
+                }
                 enemy.selectedMovePos = enemy.transform.position + new Vector3(0, 0, -GridMoveSize.y);
                 enemy.ResetMovementTimer();
-                CheckIfEvolvedEnemyAhead(enemy);
             }
 
         }
@@ -111,7 +115,10 @@ public class TileManager : MonoBehaviour
         {
             if (!enemy.IsEvolved)
             {
-                enemy.boardPosition.YPos += 1;
+                if (enemiesOnBoard.Contains(enemy))
+                {
+                    enemy.boardPosition.YPos += 1;
+                }
                 enemy.selectedMovePos = enemy.transform.position + new Vector3(0, 0, GridMoveSize.y);
                 enemy.ResetMovementTimer();
             }
