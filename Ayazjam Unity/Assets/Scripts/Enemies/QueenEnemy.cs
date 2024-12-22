@@ -18,10 +18,6 @@ public class QueenEnemy : EnemyBase
 
     private void Update()
     {
-        if (!isActive)
-        {
-            return;
-        }
         if (!isAttacking)
         {
             currentAttackTimer -= Time.deltaTime;
@@ -32,7 +28,7 @@ public class QueenEnemy : EnemyBase
             StartCoroutine(Attack());
             currentAttackTimer = AttackTimer;
         }
-        else if (currentWalkTimer <= 0 && !isAttacking && !IsEvolved) // add if on edge of map 
+        else if (currentWalkTimer <= 0 && !isAttacking && !IsEvolved && isActive) // add if on edge of map 
         {
             Move();
             currentWalkTimer = WalkCoolDown;
