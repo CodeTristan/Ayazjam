@@ -26,6 +26,14 @@ public class AttackTile : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Player")
+        {
+            other.transform.parent.GetComponent<PlayerMovement>().TakeDamage();
+        }
+    }
+
     private void ActivateParticles()
     {
         foreach (var particleSystem in particleSystems)

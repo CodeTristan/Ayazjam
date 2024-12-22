@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -30,6 +31,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if(CurrentHealth <= 0)
+        {
+            Destroy(gameObject);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
         currentMovementTimer -= Time.deltaTime;
         // Eðer karakter hareket etmiyorsa, hareket girdisini kontrol et
         if (currentMovementTimer <= 0)
@@ -50,6 +57,11 @@ public class PlayerMovement : MonoBehaviour
                 Debug.Log(transform.position.z / 1.25f);
             }
         }
+    }
+
+    public void TakeDamage()
+    {
+        CurrentHealth--;
     }
 
     private void HandleMovementInput()

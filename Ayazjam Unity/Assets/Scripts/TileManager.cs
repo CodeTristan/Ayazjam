@@ -64,7 +64,7 @@ public class TileManager : MonoBehaviour
 
     public void ShiftTileUp()
     {
-        if (currentTileIndex == (TileCount+1) * 10.25f - 5)
+        if (currentTileIndex == (TileCount-1) * 10.25f - 5)
         {
             return;
         }
