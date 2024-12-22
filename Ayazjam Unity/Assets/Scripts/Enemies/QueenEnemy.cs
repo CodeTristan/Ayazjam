@@ -23,7 +23,7 @@ public class QueenEnemy : EnemyBase
             currentAttackTimer -= Time.deltaTime;
             currentWalkTimer -= Time.deltaTime;
         }
-        if (currentAttackTimer <= 0 && !IsEvolved)
+        if (currentAttackTimer <= 0 && !IsEvolved && isActive)
         {
             StartCoroutine(Attack());
             currentAttackTimer = AttackTimer;
@@ -39,7 +39,7 @@ public class QueenEnemy : EnemyBase
             transform.position = Vector3.Lerp(transform.position, selectedMovePos, MoveAnimSpeed);
         }
 
-        if (currentAttackTimer <= 0 && IsEvolved)
+        if (currentAttackTimer <= 0 && IsEvolved && isActive)
         {
             StartCoroutine(Ultimate());
             currentAttackTimer = UltimateAttackTimer;

@@ -23,7 +23,7 @@ public class BishopEnemy : EnemyBase
             currentAttackTimer -= Time.deltaTime;
             currentWalkTimer -= Time.deltaTime;
         }
-        if (currentAttackTimer <= 0 && !IsEvolved)
+        if (currentAttackTimer <= 0 && !IsEvolved && isActive)
         {
             StartCoroutine(Attack());
             currentAttackTimer = AttackTimer;
@@ -44,7 +44,7 @@ public class BishopEnemy : EnemyBase
             animator.SetBool("IsMoving",false);
         }
 
-        if (currentAttackTimer <= 0 && IsEvolved)
+        if (currentAttackTimer <= 0 && IsEvolved && isActive)
         {
             currentAttackTimer = UltimateAttackTimer;
             StartCoroutine(Ultimate());
