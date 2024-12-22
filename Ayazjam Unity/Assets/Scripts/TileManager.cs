@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -81,7 +82,7 @@ public class TileManager : MonoBehaviour
         {
             enemy.isActive = false;
             
-            if (!enemy.IsEvolved)
+            if (!enemy.IsEvolved && (enemy.IsEvolved && enemy.GetType() == typeof(QueenEnemy)))
             {
                 if (enemiesOnBoard.Contains(enemy))
                 {
@@ -113,7 +114,7 @@ public class TileManager : MonoBehaviour
 
         foreach (EnemyBase enemy in allEnemies)
         {
-            if (!enemy.IsEvolved)
+            if (!enemy.IsEvolved || (enemy.IsEvolved && enemy.GetType() == typeof(QueenEnemy)))
             {
                 if (enemiesOnBoard.Contains(enemy))
                 {
@@ -132,7 +133,7 @@ public class TileManager : MonoBehaviour
 
     }
 
-    private void getEnemiesOnBoard()
+    public void getEnemiesOnBoard()
     {
         foreach (var item in enemiesOnBoard)
         {

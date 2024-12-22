@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
 
     public Slider levelSlider;
     public TextMeshProUGUI hpText;
+
+    public GameObject[] hpBars;
     public void Init()
     {
         instance = this;
@@ -20,6 +22,21 @@ public class UIManager : MonoBehaviour
     private void Update()
     {
         levelSlider.value = TileManager.instance.currentTileIndex;
-        hpText.text = player.CurrentHealth.ToString();
+        UpdateHp();
+    }
+
+    public void UpdateHp()
+    {
+        for (int i = 0; i < hpBars.Length; i++)
+        {
+            if (i < player.CurrentHealth)
+            {
+                hpBars[i].SetActive(true);
+            }
+            else
+            {
+                hpBars[i].SetActive(false);
+            }
+        }
     }
 }

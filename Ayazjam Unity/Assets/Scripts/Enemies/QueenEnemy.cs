@@ -56,6 +56,8 @@ public class QueenEnemy : EnemyBase
         //Maybe add a death animation
         Destroy(gameObject);
         TileManager.instance.enemiesOnBoard.Remove(this);
+        TileManager.instance.allEnemies.Remove(this);
+        TileManager.instance.getEnemiesOnBoard();
     }
 
     public override void Move()

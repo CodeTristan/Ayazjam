@@ -60,6 +60,8 @@ public class BishopEnemy : EnemyBase
     {
         Destroy(gameObject);
         TileManager.instance.enemiesOnBoard.Remove(this);
+        TileManager.instance.allEnemies.Remove(this);
+        TileManager.instance.getEnemiesOnBoard();
 
     }
 
