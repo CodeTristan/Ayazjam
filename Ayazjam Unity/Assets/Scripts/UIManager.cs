@@ -14,11 +14,17 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI hpText;
 
     public GameObject[] hpBars;
+
+    public Canvas canvas;
     public void Init()
     {
         instance = this;
     }
 
+    public void CloseCanvas()
+    {
+        canvas.enabled = false;
+    }
     private void Update()
     {
         levelSlider.value = TileManager.instance.currentTileIndex;

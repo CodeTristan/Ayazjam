@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 public class QueenEnemy : EnemyBase
 {
     public float UltimateSecondAttackDelay = 2f;
     public float UltimateAttackTimer = 5f;
+
+    [SerializeField] private VideoPlayer videoPlayer;
 
     private void Start()
     {
@@ -54,12 +59,27 @@ public class QueenEnemy : EnemyBase
     public override void Die()
     {
         //Maybe add a death animation
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        Damage = 0;
+        currentAttackTimer = 10000;
+        FindObjectOfType<PlayerMovement>().CurrentHealth = 1000;
         TileManager.instance.enemiesOnBoard.Remove(this);
         TileManager.instance.allEnemies.Remove(this);
         TileManager.instance.getEnemiesOnBoard();
+        StartCoroutine(end());
     }
 
+    IEnumerator end()
+    {
+        GameManager.instance.animator.SetBool("isDark",true);
+        yield return new WaitForSeconds(1.5f);
+        GameManager.instance.animator.SetBool("isDark", false);
+        GameManager.instance.animator.gameObject.SetActive(false);
+        UIManager.instance.canvas.enabled = false;
+        videoPlayer.Play();
+        yield return new WaitForSeconds(24f);
+        SceneManager.LoadScene("MOTHERMENU");
+    }
     public override void Move()
     {
         throw new System.NotImplementedException();

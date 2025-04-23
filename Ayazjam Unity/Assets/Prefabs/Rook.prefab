@@ -163,15 +163,16 @@ MonoBehaviour:
   AttackRange: 1
   AttackTimer: 3.1
   WalkCoolDown: 3
-  MoveAnimSpeed: 0.15
+  MoveAnimSpeed: 0.05
   AttackTileDelay: 2
   IsEvolved: 0
+  isActive: 0
   MoveVector: {x: 0, y: -1.28}
   selectedMovePos: {x: 0, y: 0, z: 0}
   attackTilePrefab: {fileID: 2869062456795461292, guid: ff38ecd634bf91643b709139e6670be8, type: 3}
   animator: {fileID: 2203775335908783921}
   UltimateSecondAttackDelay: 2
-  UltimateAttackTimer: 10
+  UltimateAttackTimer: 6
 --- !u!54 &3677128675689160862
 Rigidbody:
   m_ObjectHideFlags: 0

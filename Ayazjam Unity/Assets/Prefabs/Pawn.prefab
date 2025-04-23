@@ -161,7 +161,7 @@ MonoBehaviour:
   Damage: 1
   Speed: 1
   AttackRange: 1
-  AttackTimer: 3.1
+  AttackTimer: 1.6
   WalkCoolDown: 3
   MoveAnimSpeed: 0.2
   AttackTileDelay: 2

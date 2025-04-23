@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 6874336103227375783}
   serializedVersion: 2
   m_LocalRotation: {x: -0.38268343, y: -0, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: 0.5, y: 0.046445824, z: 0.046445828}
+  m_LocalPosition: {x: 0.47788072, y: 14.874972, z: -9.85213}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -51,7 +51,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 14.7901535, y: 51.269413, z: 10.5894}
+  m_Size: {x: 14.7901535, y: 10, z: 10.5894}
   m_Center: {x: -0.47787577, y: -15.734702, z: -4.6243677}
 --- !u!1 &7701085854214924576
 GameObject:
@@ -160,17 +160,18 @@ MonoBehaviour:
   Damage: 1
   Speed: 1
   AttackRange: 1
-  AttackTimer: 4
+  AttackTimer: 2.1
   WalkCoolDown: 2
   MoveAnimSpeed: 0.15
   AttackTileDelay: 1
   IsEvolved: 0
+  isActive: 0
   MoveVector: {x: 1.28, y: -1.28}
   selectedMovePos: {x: 0, y: 0, z: 0}
   attackTilePrefab: {fileID: 2869062456795461292, guid: ff38ecd634bf91643b709139e6670be8, type: 3}
   animator: {fileID: 6227526570988055116}
   UltimateSecondAttackDelay: 2
-  UltimateAttackTimer: 7
+  UltimateAttackTimer: 4
 --- !u!95 &6227526570988055116
 Animator:
   serializedVersion: 5

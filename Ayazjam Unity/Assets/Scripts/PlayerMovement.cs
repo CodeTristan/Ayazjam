@@ -21,8 +21,10 @@ public class PlayerMovement : MonoBehaviour
 
     public float currentAttackTimer;
     public float MovementTimer;
+    public float DamageInvisTimer;
 
     private float currentMovementTimer;
+    private float currentDamageInvisTimer;
 
     void Start()
     {
@@ -31,9 +33,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if(CurrentHealth <= 0)
+        currentDamageInvisTimer -= Time.deltaTime;
+        if (CurrentHealth <= 0)
         {
-            Destroy(gameObject);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
@@ -61,7 +63,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void TakeDamage()
     {
-        CurrentHealth--;
+        if(currentDamageInvisTimer < 0)
+        {
+            CurrentHealth--;
+            currentDamageInvisTimer = DamageInvisTimer;
+        }
     }
 
     private void HandleMovementInput()
